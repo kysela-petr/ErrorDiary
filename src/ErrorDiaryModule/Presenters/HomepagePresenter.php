@@ -15,14 +15,14 @@ class HomepagePresenter extends Presenter {
 	private $logFiles;
 
 	public function __construct() {
-		 $this->logDir = __DIR__ . '/../../../log/';
+		 $this->logDir = LOG_DIR;
 		 $this->logFiles = [
-			'critical' => 'critical.log',
-			'error' => 'error.log',
-			'exception' => 'exception.log',
-			'access' => 'access.log',
-			'info' => 'info.log',
-			'email' => 'email-sent',
+			'critical' => '/critical.log',
+			'error' => '/error.log',
+			'exception' => '/exception.log',
+			'access' => '/access.log',
+			'info' => '/info.log',
+			'email' => '/email-sent',
 		];
 	}
 
@@ -30,8 +30,11 @@ class HomepagePresenter extends Presenter {
         parent::beforeRender();
 
         if (!$this->getUser()->isLoggedIn()) {
-			$this->redirect('/');
+			$this->redirectUrl('/');
 		}
+	}
+
+	public function actionDefault() {
 	}
 
 	public function actionLog($type) {
