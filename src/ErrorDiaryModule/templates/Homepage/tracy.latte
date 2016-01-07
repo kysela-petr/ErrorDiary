@@ -1,0 +1,36 @@
+{block content}
+<div class="row">
+	<div class="col-md-6">
+		<h2 id="critical">
+			Tracy Error files <span class="badge badge-danger">count: {count($tracyEntries)}</span>
+		</h2>
+	</div>
+	<div class="col-md-6">
+		<div class="btn-top pull-right">
+		  <a href="{link Homepage:tracyDelete 'name'=>'all'}" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> delete all files</a>
+		</div>
+	</div>
+</div>
+<div class="alert alert-warning" role="alert" n:if="count($tracyEntries) == 0"><strong>WOW!</strong> No log entries.</div>
+
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default" n:foreach="$tracyEntries as $entry">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{$iterator->counter}" aria-expanded="true" aria-controls="collapseOne">
+          {$entry}
+        </a>
+        <div class="pull-right">
+		    <a href="{link Homepage:exception 'name'=>$entry}" target="_blank" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-new-window"></i> open exception</a>
+		    <a href="{link Homepage:tracyDelete 'name'=>$entry}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-remove-circle"></i> delete</a>
+	  	</div>
+      </h4>
+    </div>
+    <div id="collapse{$iterator->counter}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+        <iframe src="{link Homepage:exception 'name'=>$entry}" style="width:100%; height: 600px; border: 0 none;"></iframe>
+      </div>
+    </div>
+  </div>
+</div>

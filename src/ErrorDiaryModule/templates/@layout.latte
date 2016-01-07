@@ -1,0 +1,104 @@
+<!doctype html>
+<html class="no-js" lang="cs_CZ">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>ErrorDiary</title>
+        <meta name="robots" content="noindex">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+		<style type="text/css">
+			.affix { margin-top: -5px; }
+			@media screen and (max-width: 991px) {
+				.affix {
+				    position: relative!important;
+				}		
+			}
+			@media screen and (min-width: 992px) {
+				.affix {
+				    position: fixed;
+					width: 213px;
+				}		
+			}
+			@media screen and (min-width: 1200px) {
+				.affix {
+				    width: 263px;
+				}
+			}
+			.panel-heading .btn { margin-top: -3px; }
+			.badge-danger { background: #c9302c!important; margin-left: 3px; }
+			.c-gray { color: gray; }
+			#img {
+				max-width: 600px;
+				margin: 20px auto;
+			}
+			.alert,
+			.btn-top { margin-top: 20px; }
+			.border-bottom { border-bottom: 1px solid #ddd; }
+			.code-container { background-color: #333; display: none;}
+		</style>
+
+	    <script src="https://code.jquery.com/jquery-2.1.4.min.js" crossorigin="anonymous"></script>
+	    
+	    <script type="text/javascript">
+		    $(function(){
+		    	var images = [
+		    		'http://i.imgur.com/aGgSx6C.jpg',
+		    		'http://i.imgur.com/IxlLQCT.jpg',
+		    		'http://media02.hongkiat.com/programming-jokes/joke-semi-colon.jpg',
+		    		'https://www.kapadiya.net/images/cover/1.jpg',
+		    		'http://media02.hongkiat.com/programming-jokes/joke-hardware.jpg',
+		    		'https://s-media-cache-ak0.pinimg.com/736x/fd/36/4b/fd364be7b109ba052dd6867302caeae0.jpg',
+		    		'http://codango.com/wp-content/uploads/700x420xChuck-norris-joke-for-programmers.jpg.pagespeed.ic.a8arkGZSkK.jpg',
+		    		'https://sslimgs.xkcd.com/comics/random_number.png',
+		    		'http://mattdturner.com/wordpress/wp-content/uploads/2011/04/imagesbug_20vs_20feature_small.jpg',
+		    		'https://49.media.tumblr.com/tumblr_m2igmkIMc31royzmso1_500.gif'
+		    	];
+
+		    	var random = Math.floor(Math.random() * images.length);
+
+		    	$('#img').prepend('<img class="img-responsive img-thumbnail" src="' + images[random] + '" />'); 
+		    });
+
+	    </script>
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    </head>
+    <body>
+    	<div class="container">
+    		<div class="row">
+    			<div class="col-md-3" id="affix-container">
+    				<div data-spy="affix" data-target="affix-container">
+	    				<h1>Error<span class="c-gray">Diary</span></h1>
+	    				<div class="list-group">
+						  <a href="{link Homepage:default}" class="list-group-item{ifCurrent Homepage:default} disabled{/ifCurrent}">Dashboard</a>
+						  <a href="{link Homepage:log 'type'=>'critical'}" class="list-group-item{ifCurrent Homepage:log 'type'=>'critical'} disabled{/ifCurrent}">Critical log</a>
+						  <a href="{link Homepage:log 'type'=>'error'}" class="list-group-item{ifCurrent Homepage:log 'type'=>'error'} disabled{/ifCurrent}">Error log</a>
+						  <a href="{link Homepage:log 'type'=>'exception'}" class="list-group-item{ifCurrent Homepage:log 'type'=>'exception'} disabled{/ifCurrent}">Exception log</a>
+						  <a href="{link Homepage:log 'type'=>'access'}" class="list-group-item{ifCurrent Homepage:log 'type'=>'access'} disabled{/ifCurrent}">Access log</a>
+						  <a href="{link Homepage:log 'type'=>'info'}" class="list-group-item{ifCurrent Homepage:log 'type'=>'info'} disabled{/ifCurrent}">Info log</a>
+						  <a href="{link Homepage:log 'type'=>'email'}" class="list-group-item{ifCurrent Homepage:log 'type'=>'email'} disabled{/ifCurrent}">Send emails</a>
+						  <a href="{link Homepage:tracy}" class="list-group-item{ifCurrent Homepage:tracy} disabled{/ifCurrent}">Tracy files</a>
+						  <a href="{link Homepage:out}" class="list-group-item list-group-item-info"><i class="glyphicon glyphicon-off"></i> Sign out</a>
+						</div>
+    				</div>
+    			</div>
+    			<div class="col-md-9">
+				
+					<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type} alert-dismissible" role="alert">
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					  <strong>Hey!</strong> {$flash->message}.
+					</div>
+
+    				{block content}{/block}
+
+    			</div>
+			</div>
+		</div>
+	</body>
+</html>

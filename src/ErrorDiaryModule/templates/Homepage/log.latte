@@ -1,0 +1,98 @@
+{block content}
+<div class="row">
+	<div class="col-md-6">
+		<h2 id="critical">
+			{$logType|firstUpper} Log <span class="badge badge-danger">count: {count($logEntries)}</span>
+		</h2>
+	</div>
+	<div class="col-md-6">
+		<div class="btn-top pull-right">
+		  <button class="btn btn-success merge-button" onclick="mergeExceptionPairs()"><i class="glyphicon glyphicon-link"></i> merge</button>
+		  <a href="{link Homepage:delete 'type'=>$logType, 'line'=>'all'}" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> delete all</a>
+		  <a href="{link Homepage:delete 'type'=>$logType, 'line'=>'file'}" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> delete log file</a>
+		</div>
+	</div>
+</div>
+
+<div class="alert alert-warning" role="alert" n:if="count($logEntries) == 0"><strong>WOW!</strong> No log entries.</div>
+
+<div class="panel panel-default exception" n:foreach="$logEntries as $entry" data-type="{$logType}" data-exception="{$entry['exception']}" data-exception-id="{$entry['exceptionId']}" data-line="{$iterator->counter - 1}">
+  <div class="panel-heading">
+  	<div class="pull-right">
+	    <a n:if="$entry['exception']" href="{link Homepage:exception 'name'=>$entry['exception']}" target="_blank" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-new-window"></i> open exception</a>
+	    <button class="btn btn-info btn-xs" data-toggle="collapse" data-target="#code{$iterator->counter}"><i class="glyphicon glyphicon-info-sign"></i> source</button>
+	    <a href="{link Homepage:delete 'type'=>$logType, 'line'=>$iterator->counter - 1}" class="btn btn-primary btn-xs delete-link"><i class="glyphicon glyphicon-remove-circle"></i> delete</a>
+  	</div>
+    <h3 class="panel-title">{$iterator->counter}. {if $entry['date']}{$entry['date']} {/if}<span class="text-danger" n:if="$entry['title']">{$entry['title']}</span></h3>
+  </div>
+  <div class="panel-body border-bottom code-container" id="code{$iterator->counter}">
+  	<code>
+	    {$entry['entry']}
+  	</code>
+  </div>
+  <div class="panel-body">
+    {$entry['text']}
+  </div>
+</div>
+
+<script type="text/javascript">
+	
+	var mergeExceptionPairs,
+		mergeExceptions,
+		deleteExceptionsById;
+
+	$(function(){
+
+		var exceptions = $('.exception');
+		var exceptionPairs = [];
+
+		exceptions.each(function(){
+			var ex = $(this),
+				exId = ex.data('exception-id');
+			
+			if (exId.length === 0) {
+				return true;
+			}
+
+			if (exceptionPairs[exId] === undefined) {
+				exceptionPairs[exId] = [];
+			}
+
+			exceptionPairs[exId].push(ex.data('line'));
+		});
+
+		mergeExceptions = function(exceptionId) {
+			$('.merge-button').hide();
+			var exceptions = $('.exception[data-exception-id="' + exceptionId + '"]');
+			exceptions.each(function(i){
+				if (i === 0) {
+					if(exceptions.length > 1) {
+						var deleteLink = $($(this).find('.delete-link'));
+						deleteLink.removeAttr('href')
+							.attr('onclick', "deleteExceptionsById('" + $(this).data('type') + "', '" + exceptionId + "');return false;");
+						var panelTitle = $($(this).find('.panel-title'));
+						panelTitle.append('<span class="badge badge-danger">count: ' + exceptions.length + '</span>');	
+					}
+					return true;
+				}
+				$(this).hide();
+			});
+		};
+
+		mergeExceptionPairs = function() {
+			for (var exId in exceptionPairs) {
+				if (exceptionPairs.hasOwnProperty(exId)) {
+					mergeExceptions(exId);
+				}
+			}
+		};
+
+		deleteExceptionsById = function(type, exceptionId) {
+			var exceptions = exceptionPairs[exceptionId];
+			exceptions.sort(function(a, b){ return b-a; });
+			window.location.href = '/error-diary/delete/?type=' + type + '&line=pairs-' + exceptions.join('-');
+		};
+
+	});
+
+</script>
