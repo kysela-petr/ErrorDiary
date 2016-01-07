@@ -1,13 +1,17 @@
 {
     "name": "petrkysela/error-diary",
     "description": "Live Log Module",
-    "require": {
-        "nette/nette": "^2.3"
-    },
+    "homepage": "https://github.com/kysela-petr/ErrorDiary",
     "authors": [
         {
             "name": "Kysela Petr",
             "email": "petr@kysela.biz"
         }
-    ]
+    ],
+    "require": {
+        "nette/nette": "^2.3"
+    },
+	"autoload": {
+		"classmap": ["src/"]
+	},
 }
