@@ -1,0 +1,19 @@
+{
+	"name": "kysela/errordiary",
+	"description": "Live log diary",
+	"homepage": "https://github.com/kysela-petr/ErrorDiary",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "Kysela Petr",
+			"homepage": "http://www.kysela.biz"
+		}
+	],
+	"require": {
+		"php": ">=5.3.1",
+		"nette/nette": ">=5.2.1"
+	},
+	"autoload": {
+		"classmap": ["src/"]
+	}
+}
